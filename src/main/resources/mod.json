@@ -8,5 +8,6 @@
 	"integration-mode" : "HTTP",
 	"app-registry.port" : 8012,
 	"entcore.port" : 8009,
-	"webserviceEndpoint": ""
+	"webserviceEndpoint": "",
+	"connectorEndpoint": ""
 }

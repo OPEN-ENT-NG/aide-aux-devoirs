@@ -40,10 +40,10 @@ configurations.all {
 
 def configurePom(def pom) {
 	pom.project {
-		description 'Maxicours (ent-core)'
+		description 'Aide aux devoirs (ent-core)'
 		inceptionYear '2015'
 		packaging 'zip'
-		url 'http://code.web-education.net/one/maxicours'
+		url 'http://code.web-education.net/ong/aide-aux-devoirs'
 
 		developers {
 			developer {
@@ -54,7 +54,7 @@ def configurePom(def pom) {
 		}
 
 		scm {
-			url 'git@code.web-education.net:one/maxicours.git'
+			url 'git@code.web-education.net:ong/aide-aux-devoirs.git'
 		}
 
 		properties {
