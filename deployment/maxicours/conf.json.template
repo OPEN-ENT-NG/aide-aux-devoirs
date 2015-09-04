@@ -1,20 +1,20 @@
-    {
-      "name": "org.entcore~maxicours~0.1-SNAPSHOT",
-      "config": {
-        "main" : "org.entcore.maxicours.Maxicours",
-        "port" : 8040,
-        "app-name" : "Maxicours",
-    	"app-address" : "/maxicours",
-    	"app-icon" : "Maxicours-large",
-        "host": "${host}",
-        "ssl" : $ssl,
-        "auto-redeploy": false,
-        "userbook-host": "${host}",
-        "integration-mode" : "HTTP",
-        "app-registry.port" : 8012,
-        "mode" : "${mode}",
-        "entcore.port" : 8009,
-        "webserviceEndpoint": "",
-        "connectorEndpoint": ""
-      }
-    }
+{
+  "name": "org.entcore~maxicours~0.1-SNAPSHOT",
+  "config": {
+    "main" : "org.entcore.maxicours.Maxicours",
+    "port" : 8040,
+    "app-name" : "Maxicours",
+	"app-address" : "/maxicours",
+	"app-icon" : "Maxicours-large",
+    "host": "${host}",
+    "ssl" : $ssl,
+    "auto-redeploy": false,
+    "userbook-host": "${host}",
+    "integration-mode" : "HTTP",
+    "app-registry.port" : 8012,
+    "mode" : "${mode}",
+    "entcore.port" : 8009,
+    "webserviceEndpoint": "${maxicoursWsEndpoint}",
+    "connectorEndpoint": "${maxicoursConnectorEndpoint}"
+  }
+}

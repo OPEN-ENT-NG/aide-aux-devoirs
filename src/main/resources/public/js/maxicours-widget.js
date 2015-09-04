@@ -1,10 +1,31 @@
 var maxicoursWidget = model.widgets.findWidget("maxicours");
 maxicoursWidget.controllerData = {}
 
+maxicoursWidget.authProcess = function(){
+    maxicoursWidget
+        .getConf()
+        .getUserStatus(
+            maxicoursWidget.getUserInfo
+        )
+}
+
+maxicoursWidget.initAuthProcess = function(){
+    var delay = 1000
+    var countdown = 10
+    var timeoutFunction = function(){
+        if(maxicoursWidget.controllerData.id < 0 && countdown-- > 0){
+            maxicoursWidget.authProcess()
+            setTimeout(timeoutFunction, delay)
+        }
+    }
+
+    setTimeout(timeoutFunction, delay)
+}
+
 maxicoursWidget.getConf = function(){
     http().getJson('/maxicours/conf')
         .done(function(data){
-            for(prop in data){
+            for(var prop in data){
                 if(data.hasOwnProperty(prop))
                     maxicoursWidget.controllerData[prop] = data[prop]
             }
@@ -80,8 +101,4 @@ maxicoursWidget.getUserInfo = function(){
 
 ////    INIT    ////
 
-maxicoursWidget
-    .getConf()
-    .getUserStatus(
-        maxicoursWidget.getUserInfo
-    )
+maxicoursWidget.authProcess()

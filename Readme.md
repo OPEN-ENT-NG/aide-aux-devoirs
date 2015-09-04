@@ -39,8 +39,8 @@ This logic is implemented in the java part of the application.
     "app-registry.port" : 8012,
     "mode" : "${mode}",
     "entcore.port" : 8009,
-    "webserviceEndpoint": "",
-    "connectorEndpoint": ""
+    "webserviceEndpoint": "${maxicoursWsEndpoint}",
+    "connectorEndpoint": "${maxicoursConnectorEndpoint}"
   }
 }
 ```
@@ -59,4 +59,11 @@ Add the widget declaration:
     "js": "/maxicours/public/js/maxicours-widget.js",
     "i18n": "/maxicours/i18n"
 }
+```
+
+Add to the springboard conf. file(s) the two fields :
+
+```groovy
+maxicoursWsEndpoint=[ENDPOINT]
+maxicoursConnectorEndpoint=[ENDPOINT]
 ```

@@ -1,46 +1,49 @@
 <div class="widget maxicours-widget">
-    <h1>
-        <i18n>maxicours.title</i18n>
-        <i class="refresh-button right-magnet" tooltip="maxicours.refresh" ng-click="widget.getUserStatus(widget.getUserInfo)"></i>
-    </h1>
+    <h1><i18n>maxicours.title</i18n></h1>
+    <!--i class="refresh-button right-magnet" tooltip="maxicours.refresh" ng-click="widget.getUserStatus(widget.getUserInfo)"></i-->
+    <i class="[[widget.name]]-icon fonticon top-right-magnet" ng-if="widget.controllerData.id < 0"></i>
+    <a class="top-right-magnet" href="[[widget.controllerData.connectorEndpoint]]" target="_blank" ng-if="widget.controllerData.id >= 0"><i class="[[widget.name]]-icon fonticon"></i></a>
 
     <!-- Inactive user -->
     <div class="reduce-block-eight centered-text" ng-if="!widget.controllerData.id || widget.controllerData.id < 0">
         <h2><i18n>maxicours.inactive.user</i18n></h2>
-        <form action="[[widget.controllerData.connectorEndpoint]]" method="get">
-            <button formtarget="_blank" translate content="maxicours.connect"></button>
+        <form action="[[widget.controllerData.connectorEndpoint]]" method="get" class="vertical-spacing-twice centered-text">
+            <button ng-click="widget.initAuthProcess()" formtarget="_blank" translate content="maxicours.connect"></button>
         </form>
     </div>
 
-
     <!-- Active user -->
-    <div ng-if="widget.controllerData.id > 0">
+    <div ng-if="widget.controllerData.id >= 0">
         <div class="centered-text text-band">
             <i18n>maxicours.my.points</i18n>: <span class="highlighted">[[ widget.controllerData.userInfo.activityScore ]]</span>
         </div>
         <div class="reduce-block-eight">
-            <h4><a ng-href="[[widget.controllerData.userInfo.sessionOfTheDayUrl]]" target="_blank"><i18n>maxicours.daily.session</i18n></a></h4>
-            <div ng-if="widget.controllerData.userInfo.hasSessionOfTheDay === 'true'">
-                <div class="activity" ng-repeat="activity in widget.controllerData.userInfo.sessionOfTheDayActivities" class="row">
-                    <img class="picto" ng-src="[[activity.picto]]"></img>
-                    <div>
-                        <div><strong>[[activity.title]]</strong></div>
-                        <div>[[activity.label]]</div>
+            <div ng-if="widget.controllerData.userInfo.hasSessionOfTheDay">
+                <h4><a ng-href="[[widget.controllerData.userInfo.sessionOfTheDayUrl]]" target="_blank"><i18n>maxicours.daily.session</i18n></a></h4>
+                <div ng-if="widget.controllerData.userInfo.hasSessionOfTheDay === 'true'">
+                    <div class="activity" ng-repeat="activity in widget.controllerData.userInfo.sessionOfTheDayActivities" class="row">
+                        <img class="picto" ng-src="[[activity.picto]]"></img>
+                        <div>
+                            <div><strong>[[activity.title]]</strong></div>
+                            <div>[[activity.label]]</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <h4><i18n>maxicours.my.courses<i18n></h4>
-            <ul>
-                <li ng-repeat="course in widget.controllerData.userInfo.newPersonnalCourses">
-                    <b>
-                        <a ng-href="[[course.url]]" target="_blank">[[course.label]] ([[course.date]])</a>
-                    </b>
-                </li>
-                <li ng-repeat="course in widget.controllerData.userInfo.currentPersonnalCourses">
-                        <a ng-href="[[course.url]]" target="_blank">[[course.label]] ([[course.date]])</a>
-                </li>
-            </li>
+            <div ng-if="widget.controllerData.userInfo.newPersonnalCourses.length > 0">
+                <h4><i18n>maxicours.my.courses<i18n></h4>
+                <ul>
+                    <li ng-repeat="course in widget.controllerData.userInfo.newPersonnalCourses">
+                        <b>
+                            <a ng-href="[[course.url]]" target="_blank">[[course.label]] ([[course.date]])</a>
+                        </b>
+                    </li>
+                    <li ng-repeat="course in widget.controllerData.userInfo.currentPersonnalCourses">
+                            <a ng-href="[[course.url]]" target="_blank">[[course.label]] ([[course.date]])</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>

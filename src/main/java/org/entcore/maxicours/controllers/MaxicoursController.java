@@ -63,7 +63,7 @@ public class MaxicoursController extends ControllerHelper{
 				}
 
 				SoapHelper.SoapDescriptor messageDescriptor = new SoapHelper.SoapDescriptor(soapAction);
-				messageDescriptor.addAttribute("entId", "long", user.getExternalId());
+				messageDescriptor.addAttribute("entId", "long", user.getUserId());
 				List<String> uai = user.getUai();
 				if(uai.size() > 0)
 					messageDescriptor.addAttribute("etaRne", "string", uai.get(0));
