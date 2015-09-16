@@ -1,24 +1,31 @@
 var maxicoursWidget = model.widgets.findWidget("maxicours");
 maxicoursWidget.controllerData = {}
 
-maxicoursWidget.authProcess = function(){
-    maxicoursWidget
-        .getConf()
-        .getUserStatus(
-            maxicoursWidget.getUserInfo
-        )
+maxicoursWidget.showWidget = function(){
+    return model.me.type === 'ENSEIGNANT' || model.me.type === 'ELEVE'
+}
+
+maxicoursWidget.loading = function(mode){
+    this.loads = mode
+    model.widgets.apply()
+}
+
+maxicoursWidget.authProcess = function(hook){
+    maxicoursWidget.getUserStatus(function(){ maxicoursWidget.getUserInfo(hook) })
 }
 
 maxicoursWidget.initAuthProcess = function(){
-    var delay = 1000
-    var countdown = 10
+    var delay = 2000
+    var countdown = 5
+    maxicoursWidget.loading(true)
     var timeoutFunction = function(){
         if(maxicoursWidget.controllerData.id < 0 && countdown-- > 0){
             maxicoursWidget.authProcess()
             setTimeout(timeoutFunction, delay)
+        } else {
+            maxicoursWidget.loading(false)
         }
     }
-
     setTimeout(timeoutFunction, delay)
 }
 
@@ -36,7 +43,7 @@ maxicoursWidget.getConf = function(){
 maxicoursWidget.getUserStatus = function(hook){
     http().get('/maxicours/getUserStatus')
         .done(function(xml){
-            xmlDocument = $.parseXML(xml),
+            var xmlDocument = $.parseXML(xml),
             $xml = $(xmlDocument)
 
             maxicoursWidget.controllerData.id  = $xml.find("mxcId").text()
@@ -49,13 +56,16 @@ maxicoursWidget.getUserStatus = function(hook){
     return maxicoursWidget
 }
 
-maxicoursWidget.getUserInfo = function(){
-    if(maxicoursWidget.controllerData.id < 0)
+maxicoursWidget.getUserInfo = function(hook){
+    if(maxicoursWidget.controllerData.id < 0){
+        if(typeof hook === 'function')
+            hook()
         return;
+    }
 
     http().get('/maxicours/getUserInfo/'+maxicoursWidget.controllerData.id)
         .done(function(xml){
-            xmlDocument = $.parseXML(xml),
+            var xmlDocument = $.parseXML(xml),
             $xml = $(xmlDocument)
 
             var getText = function(xml, tagName, parent){
@@ -95,10 +105,16 @@ maxicoursWidget.getUserInfo = function(){
             }
 
             model.widgets.apply()
+        }).xhr.always(function(){
+            if(typeof hook === 'function')
+                hook()
         })
     return maxicoursWidget
 }
 
 ////    INIT    ////
 
-maxicoursWidget.authProcess()
+maxicoursWidget.getConf().authProcess(function(){
+    maxicoursWidget.loading(false)
+    model.widgets.apply()
+})

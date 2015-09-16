@@ -1,11 +1,23 @@
-<div class="widget maxicours-widget">
+<div class="widget maxicours-widget" ng-if="!widget.showWidget()">
+    <h1><i18n>maxicours.title</i18n></h1>
+    <div class="centered-text">
+        <a class="top-right-magnet" href="[[widget.controllerData.connectorEndpoint]]" target="_blank">
+            <i class="[[widget.name]]-icon fonticon"></i>
+        </a>
+    </div>
+</div>
+<div class="widget maxicours-widget" ng-if="widget.showWidget()">
     <h1><i18n>maxicours.title</i18n></h1>
     <!--i class="refresh-button right-magnet" tooltip="maxicours.refresh" ng-click="widget.getUserStatus(widget.getUserInfo)"></i-->
     <i class="[[widget.name]]-icon fonticon top-right-magnet" ng-if="widget.controllerData.id < 0"></i>
     <a class="top-right-magnet" href="[[widget.controllerData.connectorEndpoint]]" target="_blank" ng-if="widget.controllerData.id >= 0"><i class="[[widget.name]]-icon fonticon"></i></a>
 
+    <div class="loading-panel" ng-if="widget.loads">
+        <h1 translate content="loading"></h1>
+    </div>
+
     <!-- Inactive user -->
-    <div class="reduce-block-eight centered-text" ng-if="!widget.controllerData.id || widget.controllerData.id < 0">
+    <div class="reduce-block-eight centered-text" ng-if="!widget.loads && (!widget.controllerData.id || widget.controllerData.id < 0)">
         <h2><i18n>maxicours.inactive.user</i18n></h2>
         <form action="[[widget.controllerData.connectorEndpoint]]" method="get" class="vertical-spacing-twice centered-text">
             <button ng-click="widget.initAuthProcess()" formtarget="_blank" translate content="maxicours.connect"></button>
@@ -13,7 +25,7 @@
     </div>
 
     <!-- Active user -->
-    <div ng-if="widget.controllerData.id >= 0">
+    <div ng-if="!widget.loads && widget.controllerData.id >= 0">
         <div class="centered-text text-band">
             <i18n>maxicours.my.points</i18n>: <span class="highlighted">[[ widget.controllerData.userInfo.activityScore ]]</span>
         </div>
