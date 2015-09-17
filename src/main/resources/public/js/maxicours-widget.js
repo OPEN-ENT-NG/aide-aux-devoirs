@@ -2,7 +2,7 @@ var maxicoursWidget = model.widgets.findWidget("maxicours");
 maxicoursWidget.controllerData = {}
 
 maxicoursWidget.showWidget = function(){
-    return model.me.type === 'ENSEIGNANT' || model.me.type === 'ELEVE'
+    return model.me.type === 'ELEVE'
 }
 
 maxicoursWidget.loading = function(mode){
