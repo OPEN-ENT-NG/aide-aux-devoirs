@@ -1,4 +1,4 @@
-var maxicoursWidget = model.widgets.findWidget("maxicours");
+var maxicoursWidget = model.widgets.findWidget("maxicours-widget");
 maxicoursWidget.controllerData = {}
 
 maxicoursWidget.showWidget = function(){
