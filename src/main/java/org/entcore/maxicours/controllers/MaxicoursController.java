@@ -10,7 +10,7 @@ import org.entcore.common.controller.ControllerHelper;
 import org.entcore.common.user.UserInfos;
 import org.entcore.common.user.UserUtils;
 import org.entcore.common.utils.Config;
-import org.entcore.maxicours.helpers.SoapHelper;
+import org.entcore.common.soap.SoapHelper;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.buffer.Buffer;
 import org.vertx.java.core.http.HttpClient;
@@ -63,10 +63,16 @@ public class MaxicoursController extends ControllerHelper{
 				}
 
 				SoapHelper.SoapDescriptor messageDescriptor = new SoapHelper.SoapDescriptor(soapAction);
-				messageDescriptor.addAttribute("entId", "string", user.getUserId());
+				messageDescriptor
+					.addNamespace("urn","urn:mxc-wsdl")
+					.setBodyNamespace("", "urn")
+					.createElement("entId", user.getUserId())
+						.addAttribute("xsi:type", "string");
 				List<String> uai = user.getUai();
 				if(uai.size() > 0)
-					messageDescriptor.addAttribute("etaRne", "string", uai.get(0));
+					messageDescriptor
+						.createElement("etaRne", uai.get(0))
+						.addAttribute("xsi:type", "string");
 
 				processMessage(request, messageDescriptor);
 			}
@@ -85,7 +91,11 @@ public class MaxicoursController extends ControllerHelper{
 		}
 
 		SoapHelper.SoapDescriptor messageDescriptor = new SoapHelper.SoapDescriptor(soapAction);
-		messageDescriptor.addAttribute("mxcId", "long", mxcId);
+		messageDescriptor
+			.addNamespace("urn","urn:mxc-wsdl")
+			.setBodyNamespace("", "urn")
+			.createElement("mxcId", mxcId)
+				.addAttribute("xsi:type", "xsd:long");
 
 		processMessage(request, messageDescriptor);
 	}
@@ -95,8 +105,7 @@ public class MaxicoursController extends ControllerHelper{
 		try {
 			xml = SoapHelper.createSoapMessage(messageDescriptor);
 		} catch (SOAPException | IOException e) {
-			e.printStackTrace();
-			log.error("["+MaxicoursController.class.getSimpleName()+"]("+messageDescriptor.getMessage()+") Error while building the soap request.");
+			log.error("["+MaxicoursController.class.getSimpleName()+"]("+messageDescriptor.getBodyTagName()+") Error while building the soap request.");
 		}
 
 		HttpClientRequest req = soapClient.post(soapEndpoint.getPath(), new Handler<HttpClientResponse>() {
@@ -110,7 +119,7 @@ public class MaxicoursController extends ControllerHelper{
 			}
 		});
 		req
-			.putHeader("SOAPAction", "urn:mxc-wsdl#"+messageDescriptor.getMessage())
+			.putHeader("SOAPAction", messageDescriptor.getBodyTag())
 			.putHeader(HttpHeaders.CONTENT_TYPE, "text/xml;charset=UTF-8");
 		req.end(xml);
 	}
