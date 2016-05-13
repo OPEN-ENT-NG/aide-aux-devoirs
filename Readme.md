@@ -1,6 +1,11 @@
 #Aide aux devoirs - Maxicours
 
-* Licence : [AGPL v3](http://www.gnu.org/licenses/agpl.txt) - Copyright Conseil Régional Nord Pas de Calais Picardie
+* Licence : [AGPL v3](http://www.gnu.org/licenses/agpl.txt) - Copyright Conseil Régional Nord Pas de Calais - Picardie
+
+* Développeur(s) : Open Digital Education
+
+* Financeur(s) : Région Nord Pas de Calais-Picardie
+
 
 Maxicours widget for ent-core.
 Ce widget permet d'afficher dans l'OPEN ENT NG les parcours, leçon du jours et scores du service numérique Edumaxicours.
