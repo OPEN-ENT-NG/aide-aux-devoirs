@@ -36,7 +36,9 @@ public class MaxicoursController extends ControllerHelper{
 		this.soapClient = soapClient;
 		soapClient
 			.setHost(endpoint.getHost())
-			.setPort(endpoint.getPort() == -1 ? 80 : endpoint.getPort());
+			.setPort(endpoint.getPort() == -1 ? 80 : endpoint.getPort())
+			.setMaxPoolSize(32)
+			.setKeepAlive(false);
 		soapEndpoint = endpoint;
 	}
 
@@ -106,6 +108,8 @@ public class MaxicoursController extends ControllerHelper{
 			xml = SoapHelper.createSoapMessage(messageDescriptor);
 		} catch (SOAPException | IOException e) {
 			log.error("["+MaxicoursController.class.getSimpleName()+"]("+messageDescriptor.getBodyTagName()+") Error while building the soap request.");
+			renderError(request);
+			return;
 		}
 
 		HttpClientRequest req = soapClient.post(soapEndpoint.getPath(), new Handler<HttpClientResponse>() {

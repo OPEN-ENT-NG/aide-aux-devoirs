@@ -23,7 +23,7 @@ public class Maxicours extends BaseServer {
 			endpointURL = new URL(endpoint);
 			addController(new MaxicoursController(soapClient, endpointURL));
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			log.error("Invalid Maxicours url.", e);
 		}
 	}
 
