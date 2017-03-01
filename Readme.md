@@ -9,7 +9,7 @@
 
 Maxicours widget for ent-core.
 Ce widget permet d'afficher dans l'OPEN ENT NG les parcours, leçon du jours et scores du service numérique Edumaxicours.
-Spécifique Picardie.
+Spécifique Région Hauts-de-France (ex Picardie).
 
 ## Application structure
 
