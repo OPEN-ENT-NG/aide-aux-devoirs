@@ -24,32 +24,28 @@ import java.net.URL;
 
 import org.entcore.common.http.BaseServer;
 import org.entcore.maxicours.controllers.MaxicoursController;
-import org.vertx.java.core.http.HttpClient;
+import io.vertx.core.http.HttpClient;
 
 public class Maxicours extends BaseServer {
 
-	private HttpClient soapClient;
-
 	@Override
-	public void start() {
+	public void start() throws Exception {
 		super.start();
 
-		final String endpoint = container.config().getString("webserviceEndpoint", "");
-		soapClient = vertx.createHttpClient();
+		final String endpoint = config.getString("webserviceEndpoint", "");
 
 		URL endpointURL;
 		try {
 			endpointURL = new URL(endpoint);
-			addController(new MaxicoursController(soapClient, endpointURL));
+			addController(new MaxicoursController(endpointURL));
 		} catch (MalformedURLException e) {
 			log.error("Invalid Maxicours url.", e);
 		}
 	}
 
 	@Override
-	public void stop(){
+	public void stop() throws Exception {
 		super.stop();
-		soapClient.close();
 	}
 
 }

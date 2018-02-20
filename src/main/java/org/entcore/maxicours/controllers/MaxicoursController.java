@@ -25,21 +25,17 @@ import java.util.List;
 
 import javax.xml.soap.SOAPException;
 
+import io.vertx.core.http.*;
 import org.entcore.common.controller.ControllerHelper;
 import org.entcore.common.user.UserInfos;
 import org.entcore.common.user.UserUtils;
 import org.entcore.common.utils.Config;
 import org.entcore.common.soap.SoapHelper;
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.buffer.Buffer;
-import org.vertx.java.core.http.HttpClient;
-import org.vertx.java.core.http.HttpClientRequest;
-import org.vertx.java.core.http.HttpClientResponse;
-import org.vertx.java.core.http.HttpHeaders;
-import org.vertx.java.core.http.HttpServerRequest;
-import org.vertx.java.core.json.JsonObject;
-import org.vertx.java.core.logging.Logger;
-import org.vertx.java.core.logging.impl.LoggerFactory;
+import io.vertx.core.Handler;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.core.json.JsonObject;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 
 import fr.wseduc.rs.*;
 import fr.wseduc.security.ActionType;
@@ -51,13 +47,13 @@ public class MaxicoursController extends ControllerHelper{
 	private final HttpClient soapClient;
 	private final URL soapEndpoint;
 
-	public MaxicoursController(HttpClient soapClient, URL endpoint){
-		this.soapClient = soapClient;
-		soapClient
-			.setHost(endpoint.getHost())
-			.setPort(endpoint.getPort() == -1 ? 80 : endpoint.getPort())
+	public MaxicoursController(URL endpoint){
+		HttpClientOptions soapClientOptions = new HttpClientOptions()
+			.setDefaultHost(endpoint.getHost())
+			.setDefaultPort(endpoint.getPort() == -1 ? 80 : endpoint.getPort())
 			.setMaxPoolSize(32)
 			.setKeepAlive(false);
+		soapClient = vertx.createHttpClient(soapClientOptions);
 		soapEndpoint = endpoint;
 	}
 
@@ -65,7 +61,7 @@ public class MaxicoursController extends ControllerHelper{
 	@SecuredAction(type = ActionType.AUTHENTICATED, value = "")
 	public void getConf(final HttpServerRequest request){
 		JsonObject config = new JsonObject()
-			.putString("connectorEndpoint", Config.getConf().getString("connectorEndpoint", ""));
+			.put("connectorEndpoint", Config.getConf().getString("connectorEndpoint", ""));
 
 		renderJson(request, config);
 	}
