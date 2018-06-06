@@ -22,9 +22,11 @@ package org.entcore.maxicours.controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.soap.SOAPException;
 
+import io.vertx.core.Vertx;
 import io.vertx.core.http.*;
 import org.entcore.common.controller.ControllerHelper;
 import org.entcore.common.user.UserInfos;
@@ -40,21 +42,27 @@ import io.vertx.core.logging.LoggerFactory;
 import fr.wseduc.rs.*;
 import fr.wseduc.security.ActionType;
 import fr.wseduc.security.SecuredAction;
+import org.vertx.java.core.http.RouteMatcher;
 
 public class MaxicoursController extends ControllerHelper{
 
 	private final Logger log = LoggerFactory.getLogger(MaxicoursController.class);
-	private final HttpClient soapClient;
+	private HttpClient soapClient;
 	private final URL soapEndpoint;
 
 	public MaxicoursController(URL endpoint){
-		HttpClientOptions soapClientOptions = new HttpClientOptions()
-			.setDefaultHost(endpoint.getHost())
-			.setDefaultPort(endpoint.getPort() == -1 ? 80 : endpoint.getPort())
-			.setMaxPoolSize(32)
-			.setKeepAlive(false);
-		soapClient = vertx.createHttpClient(soapClientOptions);
 		soapEndpoint = endpoint;
+	}
+
+	@Override
+	public void init(Vertx vertx, JsonObject config, RouteMatcher rm, Map<String, fr.wseduc.webutils.security.SecuredAction> securedActions) {
+		super.init(vertx, config, rm, securedActions);
+		HttpClientOptions soapClientOptions = new HttpClientOptions()
+				.setDefaultHost(soapEndpoint.getHost())
+				.setDefaultPort(soapEndpoint.getPort() == -1 ? 80 : soapEndpoint.getPort())
+				.setMaxPoolSize(32)
+				.setKeepAlive(false);
+		soapClient = vertx.createHttpClient(soapClientOptions);
 	}
 
 	@Get("/conf")
