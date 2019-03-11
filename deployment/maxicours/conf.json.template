@@ -6,6 +6,7 @@
     "app-name" : "Maxicours",
 	"app-address" : "/maxicours",
 	"app-icon" : "Maxicours-large",
+    "app-type" : "WIDGET",
     "host": "${host}",
     "ssl" : $ssl,
     "auto-redeploy": false,
