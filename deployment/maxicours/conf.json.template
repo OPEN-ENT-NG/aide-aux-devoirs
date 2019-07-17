@@ -1,5 +1,5 @@
 {
-  "name": "org.entcore~maxicours~1.6-SNAPSHOT",
+  "name": "org.entcore~maxicours~1.7-SNAPSHOT",
   "config": {
     "main" : "org.entcore.maxicours.Maxicours",
     "port" : 8040,
