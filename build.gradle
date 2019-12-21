@@ -86,6 +86,33 @@ publishing {
               password "${odePassword}"
           }
       }
+    } else if (version.equalsIgnoreCase("MASTER") {
+      maven {
+        name 'Masters'
+          url 'https://maven.opendigitaleducation.com/nexus/content/repositories/ode-version/'
+          credentials {
+            username "${odeUsername}"
+              password "${odePassword}"
+          }
+      }
+    } else if (version.equalsIgnoreCase("DEV") {
+      maven {
+        name 'Developments'
+          url 'https://maven.opendigitaleducation.com/nexus/content/repositories/ode-version/'
+          credentials {
+            username "${odeUsername}"
+              password "${odePassword}"
+          }
+      }
+    } else if (version.equalsIgnoreCase("NEXT") {
+      maven {
+        name 'Futurs'
+          url 'https://maven.opendigitaleducation.com/nexus/content/repositories/ode-version/'
+          credentials {
+            username "${odeUsername}"
+              password "${odePassword}"
+          }
+      }
     } else {
       maven {
         name 'Releases'

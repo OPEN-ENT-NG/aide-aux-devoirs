@@ -32,6 +32,19 @@ publish () {
     echo "sonatypePassword=$NEXUS_SONATYPE_PASSWORD" >> "?/.gradle/gradle.properties"
   fi
   docker-compose run --rm -u "$USER_UID:$GROUP_GID" gradle gradle publish
+  RECENT_VERSION_MODULE=$(grep version= gradle.properties | awk -F "=" '{ print $2 }' | sed -e "s/\r//")
+  LOCAL_BRANCH=`echo $GIT_BRANCH | sed -e "s|origin/||g"`
+  if [ $LOCAL_BRANCH = "test-master" ]
+  then
+    sed -i "s/version=$RECENT_VERSION_MODULE/version=MASTER/" gradle.properties && sed -i "s/$RECENT_VERSION_MODULE/MASTER/" deployment/*/conf.json.template
+  elif [ $LOCAL_BRANCH = "test-dev" ]
+  then
+    sed -i "s/version=$RECENT_VERSION_MODULE/version=DEV/" gradle.properties && sed -i "s/$RECENT_VERSION_MODULE/DEV/" deployment/*/conf.json.template
+  elif [ $LOCAL_BRANCH = "test-next" ]
+  then
+    sed -i "s/version=$RECENT_VERSION_MODULE/version=NEXT/" gradle.properties && sed -i "s/$RECENT_VERSION_MODULE/NEXT/" deployment/*/conf.json.template
+  fi
+  docker-compose run --rm -u "$USER_UID:$GROUP_GID" gradle gradle publish
 }
 
 for param in "$@"
