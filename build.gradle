@@ -86,7 +86,7 @@ publishing {
               password "${odePassword}"
           }
       }
-    } else if (version.equalsIgnoreCase("MASTER") {
+    } else if (version.equalsIgnoreCase("MASTER")) {
       maven {
         name 'Masters'
           url 'https://maven.opendigitaleducation.com/nexus/content/repositories/ode-version/'
@@ -95,7 +95,7 @@ publishing {
               password "${odePassword}"
           }
       }
-    } else if (version.equalsIgnoreCase("DEV") {
+    } else if (version.equalsIgnoreCase("DEV")) {
       maven {
         name 'Developments'
           url 'https://maven.opendigitaleducation.com/nexus/content/repositories/ode-version/'
@@ -104,7 +104,7 @@ publishing {
               password "${odePassword}"
           }
       }
-    } else if (version.equalsIgnoreCase("NEXT") {
+    } else if (version.equalsIgnoreCase("NEXT")) {
       maven {
         name 'Futurs'
           url 'https://maven.opendigitaleducation.com/nexus/content/repositories/ode-version/'
