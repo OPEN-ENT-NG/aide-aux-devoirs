@@ -37,12 +37,15 @@ publish () {
   if [ $LOCAL_BRANCH = "test-master" ]
   then
     sed -i "s/version=$RECENT_VERSION_MODULE/version=MASTER/" gradle.properties && sed -i "s/$RECENT_VERSION_MODULE/MASTER/" deployment/*/conf.json.template
+    rename 's/$RECENT_VERSION_MODULE/MASTER/' build/libs/*.jar 
   elif [ $LOCAL_BRANCH = "test-dev" ]
   then
     sed -i "s/version=$RECENT_VERSION_MODULE/version=DEV/" gradle.properties && sed -i "s/$RECENT_VERSION_MODULE/DEV/" deployment/*/conf.json.template
+    rename 's/$RECENT_VERSION_MODULE/MASTER/' build/libs/*.jar
   elif [ $LOCAL_BRANCH = "test-next" ]
   then
     sed -i "s/version=$RECENT_VERSION_MODULE/version=NEXT/" gradle.properties && sed -i "s/$RECENT_VERSION_MODULE/NEXT/" deployment/*/conf.json.template
+    rename 's/$RECENT_VERSION_MODULE/MASTER/' build/libs/*.jar
   fi
   docker-compose run --rm -u "$USER_UID:$GROUP_GID" gradle gradle publish
 }
