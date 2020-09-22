@@ -57,7 +57,8 @@ maxicoursWidget.getUserStatus = function(hook){
 }
 
 maxicoursWidget.getUserInfo = function(hook){
-    if(maxicoursWidget.controllerData.id < 0){
+    if( (typeof maxicoursWidget.controllerData.id === "string" && maxicoursWidget.controllerData.id.trim().length === 0)
+            || maxicoursWidget.controllerData.id < 0 ){
         if(typeof hook === 'function')
             hook()
         return;
