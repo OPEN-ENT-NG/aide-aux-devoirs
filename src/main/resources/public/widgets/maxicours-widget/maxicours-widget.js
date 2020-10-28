@@ -37,6 +37,9 @@ maxicoursWidget.getConf = function(){
                     maxicoursWidget.controllerData[prop] = data[prop]
             }
         })
+        .error( function() {
+          console.log('HTTP error on /maxicours/conf. aide-aux-devoirs widget will not load.');
+        })
     return maxicoursWidget
 }
 
@@ -52,6 +55,9 @@ maxicoursWidget.getUserStatus = function(hook){
 
             if(typeof hook === "function")
                 hook()
+        })
+        .error( function() {
+          console.log('HTTP error on /maxicours/getUserStatus. aide-aux-devoirs widget  will not load.');
         })
     return maxicoursWidget
 }
