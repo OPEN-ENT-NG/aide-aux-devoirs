@@ -36,6 +36,8 @@ maxicoursWidget.getConf = function(){
                 if(data.hasOwnProperty(prop))
                     maxicoursWidget.controllerData[prop] = data[prop]
             }
+            jQuery("[data-maxicours-action]").attr("action", maxicoursWidget.controllerData.connectorEndpoint);
+            jQuery("[data-maxicours-href]").attr("href", maxicoursWidget.controllerData.connectorEndpoint);
         })
         .error( function() {
           console.log('HTTP error on /maxicours/conf. aide-aux-devoirs widget will not load.');
