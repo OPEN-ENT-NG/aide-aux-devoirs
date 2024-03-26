@@ -22,6 +22,7 @@ package org.entcore.maxicours;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import io.vertx.core.Promise;
 import org.entcore.common.http.BaseServer;
 import org.entcore.maxicours.controllers.MaxicoursController;
 import io.vertx.core.http.HttpClient;
@@ -29,8 +30,8 @@ import io.vertx.core.http.HttpClient;
 public class Maxicours extends BaseServer {
 
 	@Override
-	public void start() throws Exception {
-		super.start();
+	public void start(Promise<Void> startPromise) throws Exception {
+		super.start(startPromise);
 
 		final String endpoint = config.getString("webserviceEndpoint", "");
 

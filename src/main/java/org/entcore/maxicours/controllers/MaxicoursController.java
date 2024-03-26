@@ -28,6 +28,7 @@ import javax.xml.soap.SOAPException;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.http.*;
+import io.vertx.core.http.impl.headers.HeadersMultiMap;
 import org.entcore.common.controller.ControllerHelper;
 import org.entcore.common.user.UserInfos;
 import org.entcore.common.user.UserUtils;
@@ -126,29 +127,30 @@ public class MaxicoursController extends ControllerHelper{
 	}
 
 	private void processMessage(final HttpServerRequest request, SoapHelper.SoapDescriptor messageDescriptor){
-		String xml = "";
+		StringBuilder xml = new StringBuilder();
 		try {
-			xml = SoapHelper.createSoapMessage(messageDescriptor);
+			xml.append(SoapHelper.createSoapMessage(messageDescriptor));
 		} catch (SOAPException | IOException e) {
 			log.error("["+MaxicoursController.class.getSimpleName()+"]("+messageDescriptor.getBodyTagName()+") Error while building the soap request.");
 			renderError(request);
 			return;
 		}
 
-		HttpClientRequest req = soapClient.post(soapEndpoint.getPath(), new Handler<HttpClientResponse>() {
-			public void handle(final HttpClientResponse response) {
-				response.bodyHandler(new Handler<Buffer>() {
-					@Override
-					public void handle(Buffer body) {
-						request.response().end(body);
-					}
+		soapClient.request(new RequestOptions()
+				.setMethod(HttpMethod.POST)
+				.setURI(soapEndpoint.getPath())
+				.setHeaders(new HeadersMultiMap()
+						.add("SOAPAction", messageDescriptor.getBodyTag())
+						.add(HttpHeaders.CONTENT_TYPE, "text/xml;charset=UTF-8")))
+				.flatMap(soapRequest -> soapRequest.send(xml.toString()))
+				.onSuccess(response -> {
+					response.bodyHandler(new Handler<Buffer>() {
+						@Override
+						public void handle(Buffer body) {
+							request.response().end(body);
+						}
+					});
 				});
-			}
-		});
-		req
-			.putHeader("SOAPAction", messageDescriptor.getBodyTag())
-			.putHeader(HttpHeaders.CONTENT_TYPE, "text/xml;charset=UTF-8");
-		req.end(xml);
 	}
 
 }
