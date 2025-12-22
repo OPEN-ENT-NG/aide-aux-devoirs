@@ -20,8 +20,8 @@
     </scm>
 
     <properties>
-        <web-utils.version>3.2-SNAPSHOT</web-utils.version>
-        <entcore.version>6.11-SNAPSHOT</entcore.version>
+        <web-utils.version>3.2-develop-b2school-SNAPSHOT</web-utils.version>
+        <entcore.version>6.12-develop-b2school-SNAPSHOT</entcore.version>
     </properties>
 
     <repositories>
