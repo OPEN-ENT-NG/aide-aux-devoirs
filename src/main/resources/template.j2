@@ -2,6 +2,10 @@
   "name": "org.entcore~maxicours",
   "config": {
     "main" : "org.entcore.maxicours.Maxicours",
+    "probes": [
+      "org.entcore.common.http.health.Neo4jProbe",
+      "org.entcore.common.http.health.MongoProbe"
+    ],
     "port" : 8046,
     "app-name" : "Maxicours",
     "app-address" : "/maxicours",
